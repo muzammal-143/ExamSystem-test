@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "ResultDetails";
+    Layout = "~/Views/Shared/_LayoutStudentDashboard.cshtml";
+    var db = new ExamSys.Database.ExamDB();
+    var stuRollno   = HttpContext.Current.User.Identity.Name;
+    var student     = db.Students.SingleOrDefault(m => m.Roll_No == stuRollno);
+    //var department  = db.Departments.SingleOrDefault(m => m.id == student.Department);
+    //var status      = db.Statuses.SingleOrDefault(m => m.id == student.Status);
+    //var designation = db.Designations.SingleOrDefault(m => m.id == student.Designation);
+    var ResultDetail= db.Semester_Details_Results.Where(m => m.Student == student.id).ToList();
+    var semResult   = db.Semester_Result.Where(m => m.Student == student.id).ToList();
+
+    var studentManagement = new ExamSys.Logics.Models.StudentsRefreshStatuses();
+    double CGPA = 0;
+    int Total_Sem = 0;
+}
+
+<h2>Result Details</h2>
+
+@foreach (var semRes in ResultDetail.GroupBy(m => m.Semester))
+{
+    int semNo = semRes.First().Semester;
+    <div style="box-shadow:0 0 5px black; margin:10px;padding:10px;">
+        <h3>Semester # @semNo</h3>
+        @foreach (var courseRes in semRes.GroupBy(m => m.Course))
+        {
+            int cid = courseRes.First().Course;
+            var course = db.Courses.SingleOrDefault(m => m.id == cid);
+            <div style="border:1px solid black;float:left;margin:10px;padding:10px;">
+                <h4>@course.Name </h4>
+                <table class="table-bordered" style="margin:5px;">
+                    <tr>
+                        <td>Result Type</td>
+                        <td>Total</td>
+                        <td>Obtain</td>
+                        <td>Date</td>
+                    </tr>
+                    @foreach (var resType in courseRes.GroupBy(m => m.Result_Type))
+                    {
+                        int resId = resType.First().Result_Type;
+                        var restype = db.Result_Types.SingleOrDefault(m => m.id == resId);
+                        foreach (var item in resType)
+                        {
+                            <tr>
+                                <td>@restype.Type</td>
+                                <td>@item.Total</td>
+                                <td>@item.Obtain</td>
+                                <td>@item.created_at.ToShortDateString()</td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+        }
+
+
+
+        <!-- semester result -->
+        <div style="margin:10px;padding:10px;">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Course Code</th>
+                    <th>Course Title</th>
+                    <th>CR</th>
+                    <th>TM</th>
+                    <th>OM</th>
+                    <th>GP</th>
+                    <th>LG</th>
+                </tr>
+                @foreach (var item in semResult.Where(m => m.Semester == semNo).ToList())
+                {
+                    var course = db.Courses.SingleOrDefault(m => m.id == item.Course);
+                    <tr>
+                        <td>@course.Code</td>
+                        <td>@course.Name</td>
+                        <td>@course.CH</td>
+                        <th>@item.TM</th>
+                        <th>@item.OM</th>
+                        <th>@item.GP</th>
+                        <th>@item.LG</th>
+                    </tr>
+                }
+                
+            </table>
+        </div>
+
+
+
+
+
+
+
+
+
+    </div>
+}
+
+<p>after foreach</p>

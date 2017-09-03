@@ -1,0 +1,45 @@
+﻿@model ExamSys.Database.dbEntities.Designations
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutAdminDashboard.cshtml";
+    var db = new ExamSys.Database.ExamDB();
+    var Tools = new ExamSys.Logics.Models.Tools();
+}
+<h1>Designations</h1>
+<h2>Details</h2>
+
+<div>
+    <h4>Designations</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_at)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_at)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.edited_at)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.edited_at)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }, new { @class="btn btn-success" }) | 
+    @Html.ActionLink("Back to List", "Index", null,new { @class = "btn btn-default" })
+</p>

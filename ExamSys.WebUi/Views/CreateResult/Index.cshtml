@@ -1,0 +1,18 @@
+﻿@model ExamSys.WebUi.Models.GetStudentView
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutAdminDashboard.cshtml";
+    var Tools = new ExamSys.Logics.Models.Tools();
+}
+
+<h2>Index</h2>
+
+@using (Html.BeginForm("GetStudents", "CreateResult"))
+{
+    <p> Department :    @Html.DropDownListFor(m => m.dept, Tools.Departments) </p>
+    <p> Semesters :     @Html.TextBoxFor(m => m.semester) </p>
+    <p> Course :        @Html.DropDownListFor(m => m.Course, Tools.Courses) </p>
+    <p> Result Type :   @Html.DropDownListFor(m => m.result_type, Tools.Result_Types) </p>
+
+    <input type="submit" name="submit" />
+}

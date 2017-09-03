@@ -1,0 +1,115 @@
+﻿@model IEnumerable<ExamSys.Database.dbEntities.Semester_Result>
+
+@{
+    ViewBag.Title = "showStudent";
+    Layout = "~/Views/Shared/_LayoutAdminDashboard.cshtml";
+
+    var db = new ExamSys.Database.ExamDB();
+    var studentManagement = new ExamSys.Logics.Models.StudentsRefreshStatuses();
+    var Tools = new ExamSys.Logics.Models.Tools();
+    double CGPA = 0;
+    int Total_Sem = 0;
+    var Student = (ExamSys.Database.dbEntities.Students)ViewBag.Student;
+    var Dept = db.Departments.SingleOrDefault(m => m.id == Student.Department);
+    var degree = db.Degrees.SingleOrDefault(m => m.id == Dept.Degree);
+    var degreeYears = Dept.TotalSemesters * 2;
+    
+}
+<style>
+    #transcript td{
+        text-align:center;
+    }
+</style>
+<div style="width:300px;float:right; padding:10px; border:1px solid lightgray;">
+    <h3 style="color:green;">Change student status :</h3>
+    @using (Html.BeginForm("ChangeStudentStatus", "ResultShow"))
+    {
+        <input type="hidden" name="rollNo" id="rollNo" value="@Student.Roll_No" />
+        <p>Status : 
+            @Html.DropDownList("status", Tools.Statuses)
+            <textarea name="comment" id="comment" cols="40" rows="2"></textarea>
+            <input type="submit" name="submit" class="btn btn-default" />
+        </p>
+    }
+</div>
+<h2>Transcript</h2>
+@{
+    var color = "Green";
+    if (Student.Status > 2){ color = "red";}
+}
+<h2 style="color:@color">@db.Statuses.SingleOrDefault(m=>m.id == Student.Status).Title</h2>
+<table id="transcript" class="table">
+    <tr>
+        <td style="padding-top:50px;">
+            <b style="color:red;font-size:20px;">sr. 344280920</b>
+        </td>
+        <td>
+            <p><b>Acedmic Transcript</b></p>
+            <p><b>Department of @Dept.FullName</b></p>
+            <p><b>@degree.Title in @Dept.FullName ( @degreeYears Years Program ) </b></p>
+            <p><b>Acedemic Session @Student.Session </b></p>
+        </td>
+        <td>
+            <img src="~/Images/DefaultUser.png"  width="100"/>
+        </td>
+    </tr>
+</table>
+<table class="table">
+    <tr>
+        <td>Student Name : @Student.First_Name @Student.Last_Name</td>
+        <td>Roll No : @Student.Roll_No</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>Registration No : @Student.RegistrationNO</td>
+    </tr>
+</table>
+
+@foreach (var semResult in Model.GroupBy(m => m.Semester))
+{
+    <div style="margin:10px;padding:10px;">
+        <table class="table table-bordered">
+            <tr>
+                <td>Semester # @Model.First().Semester</td>
+            </tr>
+            <tr>
+                <th>Course Code</th>
+                <th>Course Title</th>
+                <th>CR</th>
+                <th>TM</th>
+                <th>OM</th>
+                <th>GP</th>
+                <th>LG</th>
+            </tr>
+            @foreach (var item in semResult)
+            {
+                var course = db.Courses.SingleOrDefault(m => m.id == item.Course);
+                <tr>
+                    <td>@course.Code</td>
+                    <td>@course.Name</td>
+                    <td>@course.CH</td>
+                    <th>@item.TM</th>
+                    <th>@item.OM</th>
+                    <th>@item.GP</th>
+                    <th>@item.LG</th>
+                </tr>
+            }
+            <tr>
+                <td colspan="4"></td>
+                <td>GPA</td>
+                <td colspan="2">
+                    @{
+                        var GPA = Tools.getGPA(semResult.ToList());
+                        CGPA += GPA;
+                        Total_Sem++;
+                    }
+                    @GPA
+                </td>
+            </tr>
+        </table>
+    </div>
+}
+@{
+    CGPA = CGPA / Total_Sem;
+}
+<h1 style="float:right">CGPA @CGPA</h1>

@@ -1,0 +1,109 @@
+﻿@model ExamSys.Database.dbEntities.Semester_Result
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutAdminDashboard.cshtml";
+    var db = new ExamSys.Database.ExamDB();
+    var Tools = new ExamSys.Logics.Models.Tools();
+}
+<h1>Semester Result's</h1>
+<h2>Details</h2>
+
+<div>
+    <h4>Semester_Result</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Semester)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Semester)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TM)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TM)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OM)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OM)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GP)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GP)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LG)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LG)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Student)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Student)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Department)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Department)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Faculty)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Faculty)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Course)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Course)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_at)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_at)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.edited_at)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.edited_at)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }, new { @class="btn btn-success" }) | |
+    @Html.ActionLink("Back to List", "Index", null,new { @class = "btn btn-default" })
+</p>

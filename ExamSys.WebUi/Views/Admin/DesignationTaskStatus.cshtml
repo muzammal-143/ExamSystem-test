@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "DesignationTaskStatus";
+    Layout = "~/Views/Shared/_LayoutAdminDashboard.cshtml";
+
+    var db = new ExamSys.Database.ExamDB();
+    var Tools = new ExamSys.Logics.Models.Tools();
+}
+
+<h2>Designation Task Status</h2>
+<table class="table table-bordered">
+    <tr>
+        <td>Name</td>
+        <td>Status</td>
+    </tr>
+    @foreach (var item in db.Faculties.Where(m => m.Designation == 2 & m.Comment != "").ToList())
+    {
+        var results = db.Semester_Details_Results
+            .Where(
+                m => m.Faculty == item.id & 
+                    m.created_at > item.edited_at &
+                     m.created_at < item.TimeExtension
+                ).ToList();
+        var status = results.Count > 0 ? "Yes" : "No";
+
+        <tr style="background-color:@(status=="Yes"?"lightgreen":"red") ">
+            <td>@item.UserName</td>
+            <td>@status</td>
+        </tr>
+        
+    }
+</table>

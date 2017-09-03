@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "Student";
+    Layout = "~/Views/Shared/_LayoutAdminDashboard.cshtml";
+}
+
+<h2>Student</h2>
+
+@using (Html.BeginForm())
+{
+    <p>Enter Roll No :
+        <input type="text" id="RollNo" name="RollNo" value="" />
+    </p>
+    <input type="submit" name="submit" value="submit" />
+}

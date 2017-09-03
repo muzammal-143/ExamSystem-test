@@ -1,0 +1,35 @@
+﻿@model ExamSys.WebUi.Models.GetStudentView
+
+@{
+    ViewBag.Title = "GetStudents";
+    Layout = "~/Views/Shared/_LayoutAdminDashboard.cshtml";
+    var Tools = new ExamSys.Logics.Models.Tools();
+}
+
+<h2>GetStudents</h2>
+<table>
+    @using (Html.BeginForm())
+    {
+        <tr>
+            <td>Department</td>
+            <td>@Html.DropDownListFor(m => m.dept, Tools.Departments) </td>
+        </tr>
+        <tr>
+            <td>Semesters :</td>
+            <td>@Html.TextBoxFor(m => m.semester) </td>
+        </tr>
+        <tr>
+            <td>Course : </td>
+            <td>@Html.DropDownListFor(m => m.Course, Tools.Courses) </td>
+        </tr>
+        <tr>
+            <td>Result Type : </td>
+            <td>@Html.DropDownListFor(m => m.result_type, Tools.Result_Types) </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" name="submit" />
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,36 @@
+﻿@model IEnumerable<ExamSys.Database.dbEntities.Students>
+@{
+    ViewBag.Title = "showStudentStatus";
+    Layout = "~/Views/Shared/_LayoutAdminDashboard.cshtml";
+    var db = new ExamSys.Database.ExamDB();
+    var Tools = new ExamSys.Logics.Models.Tools();
+    
+    
+   
+}
+
+<h1 style="color:black;">Show Student Status</h1>
+<h1 style="color:green">@ViewBag.StudentStatus Students , Session :@ViewBag.Session </h1>
+<table class="table table-bordered table-hover">
+    <tr>
+        <th>Name</th>
+        <th>Roll No</th>
+        <th>Department</th>
+        <th>Degree</th>
+        <th>Result</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        var dept = db.Departments.Find(item.Department);
+        var degree = db.Degrees.Find(dept.Degree);
+        <tr>
+            <td>@item.First_Name @item.Last_Name</td>
+            <td>@item.Roll_No</td>
+            <td>@dept.FullName</td>
+            <td>@degree.Title</td>
+            <td>
+                <a href="@Url.Action("showStudent", "ResultShow", new { RollNo = item.Roll_No })" class="btn btn-info">Transcript</a>
+            </td>
+        </tr>
+    }
+</table>

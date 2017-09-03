@@ -1,0 +1,22 @@
+﻿@model IEnumerable<ExamSys.Database.dbEntities.Courses>
+@{
+    ViewBag.Title = "SemesterCourses";
+    Layout = "~/Views/Shared/_LayoutStudentDashboard.cshtml";
+}
+
+<h2>Current Courses</h2>
+<table class="table table-bordered">
+    <tr>
+        <td>Code</td>
+        <td>Name</td>
+        <td>CH</td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Code</td>
+            <td>@item.Name</td>
+            <td>@item.CH</td>
+        </tr>
+    }
+</table>

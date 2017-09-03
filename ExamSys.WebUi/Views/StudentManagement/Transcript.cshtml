@@ -1,0 +1,62 @@
+﻿@model IEnumerable<ExamSys.Database.dbEntities.Semester_Result>
+@{
+    ViewBag.Title = "Transcript";
+    Layout = "~/Views/Shared/_LayoutStudentDashboard.cshtml";
+    
+    var db = new ExamSys.Database.ExamDB();
+    var tools = new ExamSys.Logics.Models.Tools();
+    var studentManagement = new ExamSys.Logics.Models.StudentsRefreshStatuses();
+    double CGPA = 0;
+    int Total_Sem = 0;
+}
+
+<h2>Transcript</h2>
+
+@foreach (var semResult in Model.GroupBy(m => m.Semester))
+{
+    <div style="margin:10px;padding:10px;">
+        <table class="table table-bordered">
+            <tr>
+                <td>Semester # @Model.First().Semester</td>
+            </tr>
+            <tr>
+                <th>Course Code</th>
+                <th>Course Title</th>
+                <th>CR</th>
+                <th>TM</th>
+                <th>OM</th>
+                <th>GP</th>
+                <th>LG</th>
+            </tr>
+            @foreach (var item in semResult)
+            {
+                var course = db.Courses.SingleOrDefault(m => m.id == item.Course);
+                <tr>
+                    <td>@course.Code</td>
+                    <td>@course.Name</td>
+                    <td>@course.CH</td>
+                    <th>@item.TM</th>
+                    <th>@item.OM</th>
+                    <th>@item.GP</th>
+                    <th>@item.LG</th>
+                </tr>
+            }
+            <tr>
+                <td colspan="4"></td>
+                <td>GPA</td>
+                <td colspan="2">
+                    @{
+                        var GPA = tools.getGPA(semResult.ToList());
+                        CGPA += GPA;
+                        Total_Sem++;
+                    }
+                    @GPA
+                </td>
+            </tr>
+        </table>
+    </div>
+}
+@{
+    CGPA = CGPA / Total_Sem;
+}
+<h1 style="float:right">CGPA @CGPA</h1>

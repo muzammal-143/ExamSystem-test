@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdminDashboard.cshtml";
+    var db = new ExamSys.Database.ExamDB();
+    var faculty = db.Faculties.SingleOrDefault(m => m.UserName == HttpContext.Current.User.Identity.Name);
+    var Tools = new ExamSys.Logics.Models.Tools();
+}
+
+<h2>Index</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <td>Name</td>
+        <td>@faculty.FirstName @faculty.LastName</td>
+    </tr>
+    <tr>
+        <td>User Name</td>
+        <td>@faculty.UserName</td>
+    </tr>
+    <tr>
+        <td>Gender</td>
+        <td>@faculty.Gender</td>
+    </tr>
+    <tr>
+        <td>Picture</td>
+        <td>@faculty.Picture</td>
+    </tr>
+</table>
+
+@using (Html.BeginForm("TimeTable", "FacultyManagement"))
+{
+    <input type="hidden" name="userName" id="userName" value="@faculty.UserName" />
+    <input type="text" id="session" name="session" class="form-control" placeholder="Enter session e.g:2016">
+    <input class="btn btn-info" type="submit" value="Time Table" style="margin:-10px 0 0 -4px;" />
+}

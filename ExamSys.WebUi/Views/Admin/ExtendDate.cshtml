@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "ExtendDate";
+    Layout = "~/Views/Shared/_LayoutAdminDashboard.cshtml";
+    var db = new ExamSys.Database.ExamDB();
+    var Tools = new ExamSys.Logics.Models.Tools();
+}
+
+<h2>Extend Date</h2>
+
+<style>
+    #transcript td {
+        text-align: center;
+    }
+</style>
+<div style=" padding:20px; border:1px solid #00ff90;">
+    <h3 style="color:green;">Task date for a task :</h3>
+    @if (ViewBag.Message != "")
+    {
+        <h1 style="color:green;">@ViewBag.Message</h1>
+    }
+    @using (Html.BeginForm("ExtendDate", "Admin"))
+    {
+        <table>
+            <tr>
+                <td>Designation</td>
+                <td>@Html.DropDownList("facultyId", Tools.Faculties)</td>
+            </tr>
+            <tr>
+                <td>Date</td>
+                <td><input type="date" id="date" name="date" value="" /></td>
+            </tr>
+            <tr>
+                <td>Comment</td>
+                <td>
+                    <textarea name="comment" id="comment" cols="40" rows="2" placeholder="Comment"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" name="submit" class="btn btn-default" />
+                </td>
+            </tr>
+        </table>
+
+    }
+</div>

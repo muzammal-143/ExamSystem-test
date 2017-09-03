@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "getStudentsForStatus";
+    Layout = "~/Views/Shared/_LayoutAdminDashboard.cshtml";
+    var db = new ExamSys.Database.ExamDB();
+    var Tools = new ExamSys.Logics.Models.Tools();
+}
+
+<h2>Get Students For Status</h2>
+@using (Html.BeginForm())
+{
+    <input type="text" id="session" name="session" class="form-control" placeholder="Enter session e.g:2016">
+    <p>@Html.DropDownList("status", Tools.Statuses)</p>
+    <input class="btn btn-info" type="submit" value="Time Table" style="margin:-10px 0 0 -4px;" />
+}

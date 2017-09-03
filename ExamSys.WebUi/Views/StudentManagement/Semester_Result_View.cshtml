@@ -1,0 +1,42 @@
+﻿@model IEnumerable<ExamSys.Database.dbEntities.Semester_Result>
+@{
+    var db = new ExamSys.Database.ExamDB();
+    var studentManagement = new ExamSys.Logics.Models.StudentsRefreshStatuses();
+    
+}
+
+<div style="margin:10px;padding:10px;">
+    <table class="table table-bordered">
+        <tr>
+            <td>Semester # @Model.First().Semester</td>
+        </tr>
+        <tr>
+            <th>Course Code</th>
+            <th>Course Title</th>
+            <th>CR</th>
+            <th>TM</th>
+            <th>OM</th>
+            <th>GP</th>
+            <th>LG</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            var course = db.Courses.SingleOrDefault(m => m.id == item.Course);
+            <tr>
+                <td>@course.Code</td>
+                <td>@course.Name</td>
+                <td>@course.CH</td>
+                <th>@item.TM</th>
+                <th>@item.OM</th>
+                <th>@item.GP</th>
+                <th>@item.LG</th>
+            </tr>
+        }
+        <tr>
+            <td colspan="5">CGPA</td>
+            <td colspan="2">
+                @studentManagement.SemesterGPA(Model.ToList());
+            </td>
+        </tr>
+    </table>
+</div>

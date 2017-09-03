@@ -1,0 +1,55 @@
+﻿@model IEnumerable<ExamSys.Database.dbEntities.Students>
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutAdminDashboard.cshtml";
+
+    var sView = (ExamSys.WebUi.Models.GetStudentView)Session["GetStudentView"];
+    
+    var db =new ExamSys.Database.ExamDB();
+}
+
+<h2>Get Student Lists for add new results</h2>
+
+@using (Html.BeginForm())
+{
+    ViewBag.StudentsList = Model;
+    <table>
+        <tr>
+            <th colspan="3">
+                @db.Departments.SingleOrDefault(m=>m.id == sView.dept).FullName
+            </th>
+        </tr>
+        <tr>
+            <td>
+                Semester # @sView.semester
+            </td>
+            <td>
+                @db.Courses.SingleOrDefault(m=>m.id == sView.Course).Name
+            </td>
+            <td>
+                @db.Result_Types.SingleOrDefault(m=>m.id == sView.result_type).Type
+            </td>
+        </tr>
+        <tr>
+            <th>Roll No</th>
+            <th>Total</th>
+            <th>Obtain</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Roll_No
+                </td>
+                <td>
+                    <input type="text" name="Total_@item.id.ToString()" value="" />
+                </td>
+                <td>
+                    <input type="text" name="Obtain_@item.id.ToString()" value="" />
+                </td>
+            </tr>
+        }
+    </table>
+    <input type="submit" name="submit" />
+}
+

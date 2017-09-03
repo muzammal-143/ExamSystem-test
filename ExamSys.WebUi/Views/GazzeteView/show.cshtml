@@ -1,0 +1,65 @@
+﻿@model IEnumerable<ExamSys.WebUi.Models.GazzeteView_Details>
+@{
+    ViewBag.Title = "show";
+    Layout = "~/Views/Shared/_LayoutAdminDashboard.cshtml";
+
+    var db = new ExamSys.Database.ExamDB();
+    int session = ViewBag.session;
+    int depId = ViewBag.dept;
+    var dept = db.Departments.SingleOrDefault(m => m.id == depId);
+    int semester = ViewBag.semester;
+    var Tools = new ExamSys.Logics.Models.Tools();
+    var sessionCourses = (List<ExamSys.Database.dbEntities.Courses>)ViewBag.SessionCourses;
+}
+
+<table class="table table-bordered ">
+    <tr>
+        <td></td>
+        @foreach (var course in sessionCourses)
+        {
+            <td colspan="4">@course.Name</td>
+        }
+        <td></td>
+    </tr>
+    <tr>
+        <td>Roll No</td>
+        @foreach (var course in sessionCourses)
+        {
+            <td>TM</td>
+            <td>OM</td>
+            <td>GP</td>
+            <td>CH</td>
+        }
+        <td>GPA</td>
+    </tr>
+    @foreach (var stuCourse in Model)
+    {
+        <tr>
+            <td>@stuCourse.Student.Roll_No </td>
+            @foreach (var course in sessionCourses)
+            {
+                if (course != null)
+                {
+                    var courseDetail = stuCourse.GazzeteView_Courses.SingleOrDefault(m => m.Course.id == course.id);
+                    if (courseDetail != null)
+                    {
+                        <td>@courseDetail.TotalMarks</td>
+                        <td>@courseDetail.ObtainMarks</td>
+                        <td>@courseDetail.Points</td>
+                        <td>@courseDetail.Course.CH</td>
+                    }
+                    else
+                    {
+                        <td colspan="4" style="background-color:#f88888"></td>
+                    }
+                }
+                else
+                {
+                    <td colspan="4" style="background-color:#f88888"></td>
+                }
+
+            }
+            <td>@stuCourse.GPA</td>
+        </tr>
+    }
+</table>

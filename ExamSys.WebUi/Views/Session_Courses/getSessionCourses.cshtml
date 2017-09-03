@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "getSessionCourses";
+    Layout = "~/Views/Shared/_LayoutAdminDashboard.cshtml";
+    var tools =new ExamSys.Logics.Models.Tools();
+}
+<h1>Session Courses</h1>
+<h2>Get Session Courses</h2>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Enter Roll No :
+        <input type="text" id="session" name="session" value="" />
+        @Html.DropDownList("department", tools.Departments)
+    </p>
+    <input type="submit" name="submit" value="submit" />
+}

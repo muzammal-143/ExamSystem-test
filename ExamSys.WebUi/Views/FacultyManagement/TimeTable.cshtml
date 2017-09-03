@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "TimeTable";
+    Layout = "~/Views/Shared/_LayoutAdminDashboard.cshtml";
+    var db = new ExamSys.Database.ExamDB();
+    var Tools = new ExamSys.Logics.Models.Tools();
+    
+    string userName = ViewBag.userName;
+    int session = int.Parse(ViewBag.session);
+    var faculty = db.Faculties.SingleOrDefault(m => m.UserName == userName);
+
+    var sCourses = db.Session_Courses.Where(m => m.Faculty == faculty.id & m.Session == session).ToList();
+}
+
+<h2>TimeTable</h2>
+<h1 style="color:red;">Session : @session</h1>
+<h1 style="color:red;">Faculty : @faculty.UserName</h1>
+@foreach (var dept in sCourses.GroupBy(m => m.Department))
+{
+    var dId = dept.First().Department;
+    <div style="border:1px solid lightgray;margin:5px; padding:5px;">
+        <h3 style="color:green;font-weight:bold;">Department : @db.Departments.Single(m=>m.id == dId).FullName</h3>
+        @foreach (var sem in dept.GroupBy(m => m.Semester))
+        {
+            
+            <table class="table table-bordered" style="width:400px;float:left;margin:10px;">
+                <tr>
+                    <th colspan="2" style="color:blue">
+                        Semester # @sem.First().Semester
+                    </th>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <th>CH</th>
+                </tr>
+                @foreach (var cid in sem.Select(m => m.Course))
+                {
+                    var course = db.Courses.SingleOrDefault(m=>m.id == cid);
+                    <tr>
+                        <td>@course.Name</td>
+                        <td>@course.CH</td>
+                    </tr>
+                }
+            </table>
+        }
+        <p style="clear:both">.</p>
+    </div>
+}
+
+

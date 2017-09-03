@@ -1,0 +1,32 @@
+﻿@model IEnumerable<ExamSys.Database.dbEntities.Session_Courses>
+@{
+    ViewBag.Title = "StudentCourses";
+    Layout = "~/Views/Shared/_LayoutStudentDashboard.cshtml";
+    var db = new ExamSys.Database.ExamDB();
+}
+
+<h2>Student Courses</h2>
+
+
+    @foreach (var item in Model.GroupBy(m => m.Semester))
+    {
+        <div style="width:400px;border:1px solid gray;float:left;margin:20px;padding:10px;">
+            <h3 style="text-align:center;">Semester # @item.First().Semester</h3>
+            <table class="table table-bordered">
+                <tr>
+                    <td>Code</td>
+                    <td>Name</td>
+                    <td>CH</td>
+                </tr>
+                @foreach (var course_id in item.Select(m => m.Course))
+                {
+                    var course = db.Courses.SingleOrDefault(m => m.id == course_id);
+                    <tr>
+                        <td>@course.Code</td>
+                        <td>@course.Name</td>
+                        <td>@course.CH</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }

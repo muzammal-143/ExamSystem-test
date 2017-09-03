@@ -1,0 +1,55 @@
+﻿@model IEnumerable<ExamSys.Database.dbEntities.Session_Courses>
+@{
+    ViewBag.Title = "showSessionCourses";
+    Layout = "~/Views/Shared/_LayoutAdminDashboard.cshtml";
+    var db = new ExamSys.Database.ExamDB();
+    int deptid = ViewBag.dept;
+    var dept = db.Departments.SingleOrDefault(m => m.id == deptid);
+    
+}
+
+<h1>Session Courses</h1>
+<h2>Show Session Courses</h2>
+
+<h3>Session @ViewBag.session</h3>
+<h4>Department : @dept.FullName</h4>
+
+<style>
+    #session_Courses{
+        width:400px;
+        float:left;
+        border:1px solid lightblue;
+        margin:10px;
+        padding:10px;
+    }
+</style>
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-info btn-large" })
+</p>
+@foreach (var semester in Model.GroupBy(m => m.Semester))
+{
+    <table id="session_Courses" class="table-bordered">
+        <tr>
+            <th>Semester # @semester.First().Semester</th>
+        </tr>
+        <tr>
+            <td>Course Name</td>
+            <td>Total CH</td>
+            <td>Lecturar</td>
+        </tr>
+        @foreach (var courses in semester)
+        {
+            var course = db.Courses.SingleOrDefault(m=>m.id == courses.Course);
+            var faculty = db.Faculties.SingleOrDefault(m => m.id == courses.Faculty);
+            <tr>
+                <td>@course.Name</td>
+                <td>@course.CH</td>
+                <td>@faculty.FirstName @faculty.LastName</td>
+            </tr>
+        }
+    </table>
+}
+
+
+
+
