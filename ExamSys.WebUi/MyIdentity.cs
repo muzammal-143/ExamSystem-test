@@ -5,7 +5,6 @@ using System.Linq;
 using System.Security.Principal;
 using System.Web;
 
-
 namespace ExamSys.WebUi
 {
     public class MyIdentity:IIdentity

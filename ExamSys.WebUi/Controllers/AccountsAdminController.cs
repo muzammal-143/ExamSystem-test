@@ -24,17 +24,36 @@ namespace ExamSys.WebUi.Controllers
         [HttpGet]
         public ActionResult Login() 
         {
+            ViewBag.message = "";
             return View();
         }
         [HttpPost]
         public ActionResult Login(LoginView user)
         {
-            var u = db.Faculties.SingleOrDefault(m => m.UserName == user.UserName & m.Password == user.Password);
-            if (u != null)
+            try
             {
-                FormsAuthentication.SetAuthCookie(u.UserName, false);
+                var u = db.Faculties.SingleOrDefault(m => m.UserName == user.UserName & m.Password == user.Password);
+                if (u != null)
+                {
+                    FormsAuthentication.SetAuthCookie(u.UserName, false);
+                    return RedirectToAction("Index", "Courses");
+                }
+                else
+                {
+                    ViewBag.message = "User name or password is incorrect!";
+                    return View();
+                }
+                
             }
-            return RedirectToAction("Index", "Courses");
+            catch(Exception ex)
+            {
+                ViewBag.message = "User name or password is incorrect!";
+                return View();
+            }
+
+            ViewBag.message = "User name or password is incorrect!";
+            return View();
+            
         }
 
         public ActionResult Logout() 
